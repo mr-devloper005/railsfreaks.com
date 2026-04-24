@@ -1,12 +1,12 @@
 import type { SiteRecipe } from '@/design/factory/recipe-types'
 
 export const SITE_RECIPE: SiteRecipe = {
-  productFamily: 'visual',
-  themePack: 'visual-portfolio',
+  productFamily: 'curation',
+  themePack: 'curation-warm',
   homepageTemplate: 'image-profile-home',
-  navbarTemplate: 'floating-bar',
+  navbarTemplate: 'utility-bar',
   footerTemplate: 'minimal-footer',
-  motionPack: 'studio-stagger',
+  motionPack: 'utility-snappy',
   primaryTask: 'profile',
   enabledTasks: ['profile'],
   taskTemplates: { profile: 'profile-creator', image: 'image-portfolio' },

@@ -69,6 +69,7 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
       return itemCategory === category;
     })
     .slice(0, 3);
+
   const breadcrumbData = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -95,41 +96,71 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#f7f1de_0%,#fcf8ee_45%,#f7f1de_100%)]">
       <NavbarShell />
-      <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
         <SchemaJsonLd data={breadcrumbData} />
         <Link
           href="/pdf"
-          className="text-sm text-muted-foreground hover:text-foreground"
+          className="text-sm text-[#6e5847] hover:text-[#2b221a]"
         >
-          ← Back to PDF Library
+          {'<- Back to PDF Library'}
         </Link>
-        <h1 className="text-2xl font-semibold text-foreground">{post.title}</h1>
-        <div className="overflow-hidden rounded-2xl bg-background">
+
+        <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+          <div className="rounded-[1.8rem] border border-[#c4a484]/60 bg-white/82 p-6 shadow-[0_18px_48px_rgba(99,76,56,0.1)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8a6548]">Document Asset</p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#2b221a]">{post.title}</h1>
+            <p className="mt-3 text-sm leading-7 text-[#6e5847]">
+              Preview the document inline, then download the original file with one click.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg bg-[#b87c4c] px-4 py-2 text-sm font-semibold text-[#fff7eb] hover:bg-[#9f673b]"
+              >
+                Download PDF
+              </a>
+              <Link
+                href="/profile"
+                className="rounded-lg border border-[#c4a484] bg-[#fdf6e7] px-4 py-2 text-sm font-semibold text-[#4a3527] hover:bg-[#f4e9d1]"
+              >
+                View author profiles
+              </Link>
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              ["Preview-first flow", "Open and assess before downloading."],
+              ["Profile context", "Cross-check source through profile pages."],
+              ["Fast sharing", "Document links stay stable and easy to distribute."],
+              ["Mobile optimized", "Reader works smoothly on smaller screens."],
+            ].map(([title, body]) => (
+              <div key={title} className="rounded-[1.4rem] border border-[#c4a484]/45 bg-[#fffaf1] p-4">
+                <p className="text-sm font-semibold text-[#2b221a]">{title}</p>
+                <p className="mt-2 text-xs leading-6 text-[#6e5847]">{body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="overflow-hidden rounded-2xl border border-[#c4a484]/55 bg-white shadow-[0_18px_48px_rgba(99,76,56,0.1)]">
           <iframe
             src={viewerUrl}
             title={post.title}
             className="h-[85vh] w-full"
           />
         </div>
-        <div className="flex items-center gap-3">
-          <a
-            href={fileUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
-          >
-            Download PDF
-          </a>
-        </div>
+
         {related.length ? (
           <section className="pt-4">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">More like this</h2>
+              <h2 className="text-lg font-semibold text-[#2b221a]">More like this</h2>
               <Link
                 href="/pdf"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-[#6e5847] hover:text-[#2b221a]"
               >
                 View all
               </Link>
@@ -140,24 +171,25 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
                   key={item.id}
                   post={item}
                   href={buildPostUrl("pdf", item.slug)}
+                  taskKey="pdf"
                 />
               ))}
             </div>
-            <nav className="mt-6 rounded-2xl border border-border bg-card/60 p-4">
-              <p className="text-sm font-semibold text-foreground">Related links</p>
+            <nav className="mt-6 rounded-2xl border border-[#c4a484]/50 bg-white/75 p-4">
+              <p className="text-sm font-semibold text-[#2b221a]">Related links</p>
               <ul className="mt-2 space-y-2 text-sm">
                 {related.map((item) => (
                   <li key={`related-${item.id}`}>
                     <Link
                       href={buildPostUrl("pdf", item.slug)}
-                      className="text-primary underline-offset-4 hover:underline"
+                      className="text-[#7d5538] underline-offset-4 hover:underline"
                     >
                       {item.title}
                     </Link>
                   </li>
                 ))}
                 <li>
-                  <Link href="/pdf" className="text-primary underline-offset-4 hover:underline">
+                  <Link href="/pdf" className="text-[#7d5538] underline-offset-4 hover:underline">
                     Browse all PDFs
                   </Link>
                 </li>

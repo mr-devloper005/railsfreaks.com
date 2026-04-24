@@ -19,7 +19,7 @@ const taskIcons: Record<TaskKey, any> = {
 }
 
 const footerLinks = {
-  platform: SITE_CONFIG.tasks.filter((task) => task.enabled).map((task) => ({
+  platform: SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'pdf' && task.key !== 'profile').map((task) => ({
     name: task.label,
     href: task.route,
     icon: taskIcons[task.key] || LayoutGrid,
@@ -57,23 +57,39 @@ export function Footer() {
   }
 
   const { recipe } = getFactoryState()
-  const enabledTasks = SITE_CONFIG.tasks.filter((task) => task.enabled)
+  const enabledTasks = SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'pdf' && task.key !== 'profile')
   const primaryTask = enabledTasks.find((task) => task.key === recipe.primaryTask) || enabledTasks[0]
+  const focusTaskCandidates = [
+    primaryTask,
+    enabledTasks.find((task) => task.key === 'profile' && task.key !== primaryTask?.key) || enabledTasks.find((task) => task.key !== primaryTask?.key),
+  ].filter((task): task is NonNullable<typeof task> => Boolean(task))
+  const focusTasks = Array.from(new Map(focusTaskCandidates.map((task) => [task.key, task])).values())
 
   if (recipe.footer === 'minimal-footer') {
     return (
-      <footer className="border-t border-[#d7deca] bg-[#f4f6ef] text-[#1f2617]">
+      <footer className="border-t border-[#c4a484]/55 bg-[#f7f1de] text-[#2b221a]">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
             <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
-            <p className="mt-1 text-sm text-[#56604b]">{SITE_CONFIG.description}</p>
+            <p className="mt-1 text-sm text-[#6e5847]">{SITE_CONFIG.description}</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            {enabledTasks.slice(0, 5).map((task) => (
-              <Link key={task.key} href={task.route} className="rounded-lg border border-[#d7deca] bg-white px-3 py-2 text-sm font-medium text-[#1f2617] hover:bg-[#ebefdf]">
+            {focusTasks.map((task) => (
+              <Link key={task.key} href={task.route} className="rounded-lg border border-[#c4a484] bg-white px-3 py-2 text-sm font-semibold text-[#2b221a] hover:bg-[#f4e8cf]">
                 {task.label}
               </Link>
             ))}
+          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-[#c4a484]/55 px-4 py-4 text-xs text-[#6e5847] sm:px-6 lg:px-8">
+          <span className="mr-3 uppercase tracking-[0.2em]">Company</span>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+            <Link href="/about" className="hover:text-[#2b221a] hover:underline">
+              About Us
+            </Link>
+            <Link href="/contact" className="hover:text-[#2b221a] hover:underline">
+              Contact Us
+            </Link>
           </div>
         </div>
       </footer>
@@ -87,8 +103,8 @@ export function Footer() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_1fr]">
             <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/12 bg-white/8 p-1.5">
-                  <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-transparent p-0">
+                  <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain contrast-110 saturate-125 drop-shadow-[0_3px_8px_rgba(0,0,0,0.2)]" />
                 </div>
                 <div>
                   <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
@@ -179,8 +195,8 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr]">
           <div>
             <Link href="/" className="flex items-center gap-3">
-              <div className="h-11 w-11 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1 shadow-sm">
-                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="44" height="44" className="h-full w-full object-contain" />
+              <div className="h-11 w-11 overflow-hidden rounded-xl bg-transparent p-0">
+                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="44" height="44" className="h-full w-full object-contain contrast-110 saturate-125 drop-shadow-[0_3px_8px_rgba(0,0,0,0.18)]" />
               </div>
               <div>
                 <span className="block text-lg font-semibold">{SITE_CONFIG.name}</span>

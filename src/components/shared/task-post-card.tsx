@@ -27,7 +27,7 @@ const getExcerpt = (value?: string | null, maxLength = 140) => {
   const text = stripHtml(value)
   if (!text) return ''
   if (text.length <= maxLength) return text
-  return `${text.slice(0, maxLength).trimEnd()}…`
+  return `${text.slice(0, maxLength).trimEnd()}...`
 }
 
 const getContent = (post: SitePost): ListingContent => {
@@ -79,9 +79,25 @@ const cardStyles = {
     title: 'text-[#1f2617]',
     badge: 'bg-[#1f2617] text-[#edf5dc]',
   },
+  'pdf-sheet': {
+    frame: 'rounded-[1.8rem] border border-[rgba(196,164,132,0.5)] bg-[#fffaf0] shadow-[0_18px_58px_rgba(99,76,56,0.12)] hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(99,76,56,0.18)]',
+    muted: 'text-[#6e5847]',
+    title: 'text-[#2b221a]',
+    badge: 'bg-[#b87c4c] text-[#fff7eb]',
+  },
+  'social-note': {
+    frame: 'rounded-[1.8rem] border border-[rgba(168,187,163,0.42)] bg-[#f9f5e8] shadow-[0_16px_45px_rgba(87,112,83,0.12)] hover:-translate-y-1 hover:shadow-[0_24px_62px_rgba(87,112,83,0.18)]',
+    muted: 'text-[#56604b]',
+    title: 'text-[#243024]',
+    badge: 'bg-[#a8bba3] text-[#1e2b1d]',
+  },
 } as const
 
-const getVariantForTask = (taskKey: TaskKey) => SITE_THEME.cards[taskKey] || 'listing-elevated'
+const getVariantForTask = (taskKey: TaskKey) => {
+  if (taskKey === 'pdf') return 'pdf-sheet'
+  if (taskKey === 'social') return 'social-note'
+  return SITE_THEME.cards[taskKey] || 'listing-elevated'
+}
 
 export function TaskPostCard({
   post,
