@@ -37,6 +37,8 @@ const variantShells = {
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
   'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
+  'pdf-library': 'bg-[radial-gradient(circle_at_top_left,rgba(168,187,163,0.16),transparent_26%),linear-gradient(180deg,#f7f1de_0%,#fdf9f0_100%)]',
+  'social-stream': 'bg-[radial-gradient(circle_at_top_left,rgba(184,124,76,0.14),transparent_24%),linear-gradient(180deg,#fff9ef_0%,#ffffff_100%)]',
 } as const
 
 export async function TaskListPage({ task, category }: { task: TaskKey; category?: string }) {
@@ -56,7 +58,15 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
     name: post.title,
   }))
   const { recipe } = getFactoryState()
-  const layoutKey = recipe.taskLayouts[task as keyof typeof recipe.taskLayouts] || `${task}-${task === 'listing' ? 'directory' : 'editorial'}`
+  const fallbackLayoutByTask: Partial<Record<TaskKey, string>> = {
+    listing: 'listing-directory',
+    article: 'article-editorial',
+    profile: 'profile-business',
+    sbm: 'sbm-curation',
+    pdf: 'pdf-library',
+    social: 'social-stream',
+  }
+  const layoutKey = recipe.taskLayouts[task as keyof typeof recipe.taskLayouts] || fallbackLayoutByTask[task] || 'article-editorial'
   const shellClass = variantShells[layoutKey as keyof typeof variantShells] || 'bg-background'
   const Icon = taskIcons[task] || LayoutGrid
 
@@ -84,6 +94,24 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           input: 'border border-slate-200 bg-white text-slate-950',
           button: 'bg-slate-950 text-white hover:bg-slate-800',
         }
+
+  const pdfUi = {
+    muted: 'text-[#6e5847]',
+    panel: 'border border-[#c4a484]/55 bg-white/85 shadow-[0_18px_48px_rgba(101,78,57,0.1)]',
+    soft: 'border border-[#c4a484]/45 bg-[#fdf7e8]',
+    input: 'border border-[#c4a484]/50 bg-white text-[#2b221a]',
+    button: 'bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
+  }
+
+  const socialUi = {
+    muted: 'text-[#6b5443]',
+    panel: 'border border-[#c4a484]/45 bg-white/90',
+    soft: 'border border-[#c4a484]/45 bg-[#fbf2de]',
+    input: 'border border-[#c4a484]/50 bg-white text-[#2b221a]',
+    button: 'bg-[#a8bba3] text-[#213123] hover:bg-[#93a98d]',
+  }
+  const headingClass = isDark ? 'text-white' : 'text-foreground'
+  const linkClass = isDark ? 'font-semibold text-white hover:underline' : 'font-semibold text-foreground hover:underline'
 
   return (
     <div className={`min-h-screen ${shellClass}`}>
@@ -189,11 +217,28 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         {layoutKey === 'profile-creator' || layoutKey === 'profile-business' ? (
           <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.1)] ${ui.panel}`}>
             <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-              <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
+              <div className={`min-h-[240px] rounded-[2rem] p-5 ${ui.soft}`}>
+                <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${ui.muted}`}>Sample profiles</p>
+                <div className="mt-4 space-y-3">
+                  {[
+                    ['RM', 'Riya Malhotra', 'Product Marketing Lead'],
+                    ['AK', 'Aarav Khanna', 'Growth Operations Manager'],
+                    ['NS', 'Neha Sood', 'Research & Insights Editor'],
+                  ].map(([initials, name, role]) => (
+                    <div key={name} className={`flex items-center gap-3 rounded-xl border border-white/10 px-3 py-2 ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+                      <div className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${isDark ? 'bg-white/15 text-white' : 'bg-slate-100 text-slate-900'}`}>{initials}</div>
+                      <div>
+                        <p className={`text-sm font-semibold ${headingClass}`}>{name}</p>
+                        <p className={`text-xs ${ui.muted}`}>{role}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
               <div>
                 <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-                <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Profiles with stronger identity, trust, and reputation cues.</h1>
-                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This layout prioritizes the person or business surface first, then lets the feed continue below without borrowing the same visual logic used by articles or listings.</p>
+                <h1 className={`mt-3 text-4xl font-semibold tracking-[-0.05em] ${headingClass}`}>Creator profiles with clear identity, expertise, and document credibility.</h1>
+                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>Review who published each PDF, what they specialize in, and why their resources are worth opening before you dive into full documents.</p>
               </div>
             </div>
           </section>
@@ -237,17 +282,55 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
+        {task === 'pdf' ? (
+          <section className="mb-12">
+            <div className={`rounded-[2rem] p-7 ${pdfUi.panel}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${pdfUi.muted}`}>Primary Surface</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[#2b221a]">PDF Library with fast preview, cleaner download flow, and trust-first metadata.</h1>
+              <p className={`mt-4 max-w-2xl text-sm leading-8 ${pdfUi.muted}`}>This lane is utility-first by design so users can scan document assets quickly without the visual rhythm of a standard feed.</p>
+            </div>
+          </section>
+        ) : null}
+
+        {task === 'social' ? (
+          <section className="mb-12 grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
+            <div className={`rounded-[2rem] p-7 ${socialUi.panel}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${socialUi.muted}`}>Social Stream</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[#2b221a]">Community updates designed for velocity, context, and profile credibility.</h1>
+              <p className={`mt-4 text-sm leading-8 ${socialUi.muted}`}>Unlike the PDF grid, this surface is conversation-first and intentionally lighter for rapid scanning.</p>
+            </div>
+            <div className={`rounded-[2rem] p-6 ${socialUi.soft}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${socialUi.muted}`}>Jump by topic</p>
+              <form className="mt-4 flex items-center gap-3" action={taskConfig?.route || '#'}>
+                <select name="category" defaultValue={normalizedCategory} className={`h-11 flex-1 rounded-xl px-3 text-sm ${socialUi.input}`}>
+                  <option value="all">All categories</option>
+                  {CATEGORY_OPTIONS.map((item) => (
+                    <option key={item.slug} value={item.slug}>{item.name}</option>
+                  ))}
+                </select>
+                <button type="submit" className={`h-11 rounded-xl px-4 text-sm font-medium ${socialUi.button}`}>Apply</button>
+              </form>
+              <div className="mt-4 space-y-2 text-xs text-[#7a5f4c]">
+                <p>Short-form updates now complement, not compete with, PDF surfaces.</p>
+                <p>Profiles stay linked so every post still carries source context.</p>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         {intro ? (
           <section className={`mb-12 rounded-[2rem] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-8 ${ui.panel}`}>
-            <h2 className="text-2xl font-semibold text-foreground">{intro.title}</h2>
+            <h2 className={`text-2xl font-semibold ${headingClass}`}>{intro.title}</h2>
             {intro.paragraphs.map((paragraph) => (
               <p key={paragraph.slice(0, 40)} className={`mt-4 text-sm leading-7 ${ui.muted}`}>{paragraph}</p>
             ))}
-            <div className="mt-4 flex flex-wrap gap-4 text-sm">
-              {intro.links.map((link) => (
-                <a key={link.href} href={link.href} className="font-semibold text-foreground hover:underline">{link.label}</a>
-              ))}
-            </div>
+            {task !== 'pdf' ? (
+              <div className="mt-4 flex flex-wrap gap-4 text-sm">
+                {intro.links.map((link) => (
+                  <a key={link.href} href={link.href} className={linkClass}>{link.label}</a>
+                ))}
+              </div>
+            ) : null}
           </section>
         ) : null}
 

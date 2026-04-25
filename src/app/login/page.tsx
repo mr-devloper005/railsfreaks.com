@@ -1,10 +1,15 @@
+ 'use client'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState, type FormEvent } from 'react'
 import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { LOGIN_PAGE_OVERRIDE_ENABLED, LoginPageOverride } from '@/overrides/login-page'
+import { useAuth } from '@/lib/auth-context'
 
 function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
   if (kind === 'directory') {
@@ -15,8 +20,8 @@ function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
       muted: 'text-slate-600',
       action: 'bg-slate-950 text-white hover:bg-slate-800',
       icon: Building2,
-      title: 'Access your business dashboard',
-      body: 'Manage listings, verification details, contact info, and local discovery surfaces from one place.',
+      title: 'Sign in to your PDF workspace',
+      body: 'Manage published PDFs, profile visibility, and document performance from one dashboard.',
     }
   }
   if (kind === 'editorial') {
@@ -27,8 +32,8 @@ function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
       muted: 'text-[#6e5547]',
       action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
       icon: FileText,
-      title: 'Sign in to your publication workspace',
-      body: 'Draft, review, and publish long-form work with the calmer reading system intact.',
+      title: 'Continue publishing your PDFs',
+      body: 'Return to your profile-linked publishing space and keep document updates moving.',
     }
   }
   if (kind === 'visual') {
@@ -39,8 +44,8 @@ function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
       muted: 'text-slate-300',
       action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
       icon: ImageIcon,
-      title: 'Enter the creator workspace',
-      body: 'Open your visual feed, creator profile, and publishing tools without dropping into a generic admin shell.',
+      title: 'Enter your creator document studio',
+      body: 'Access your PDF uploads, profile highlights, and library-ready files in one place.',
     }
   }
   return {
@@ -50,8 +55,8 @@ function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
     muted: 'text-[#71574a]',
     action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
     icon: Bookmark,
-    title: 'Open your curated collections',
-    body: 'Manage saved resources, collection notes, and curator identity from a calmer workspace.',
+    title: 'Welcome back to Railsfreaks',
+    body: 'Sign in to manage your PDF library, profile trust signals, and publishing activity.',
   }
 }
 
@@ -60,10 +65,21 @@ export default function LoginPage() {
     return <LoginPageOverride />
   }
 
+  const router = useRouter()
+  const { login, isLoading } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   const { recipe } = getFactoryState()
   const productKind = getProductKind(recipe)
   const config = getLoginConfig(productKind)
   const Icon = config.icon
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    await login(email, password)
+    router.push('/')
+  }
 
   return (
     <div className={`min-h-screen ${config.shell}`}>
@@ -75,7 +91,7 @@ export default function LoginPage() {
             <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em]">{config.title}</h1>
             <p className={`mt-5 text-sm leading-8 ${config.muted}`}>{config.body}</p>
             <div className="mt-8 grid gap-4">
-              {['Cleaner product-specific workflows', 'Palette and layout matched to the site family', 'Fewer repeated admin patterns'].map((item) => (
+              {['Track PDFs and profile growth in one place', 'Keep your document library fresh and organized', 'Publish faster with a trust-first workflow'].map((item) => (
                 <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">{item}</div>
               ))}
             </div>
@@ -83,10 +99,26 @@ export default function LoginPage() {
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Welcome back</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Sign in</button>
+            <form className="mt-6 grid gap-4" onSubmit={handleSubmit}>
+              <input
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm"
+                placeholder="Email address"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+              <input
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+              <button type="submit" disabled={isLoading} className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action} disabled:cursor-not-allowed disabled:opacity-70`}>
+                {isLoading ? 'Signing in...' : 'Sign in'}
+              </button>
             </form>
             <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
               <Link href="/forgot-password" className="hover:underline">Forgot password?</Link>

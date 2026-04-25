@@ -167,6 +167,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   const images = getImageUrls(post, content);
   const mapEmbedUrl = buildMapEmbedUrl(content.latitude, content.longitude, location);
   const isBookmark = task === "sbm" || task === "social";
+  const isSocial = task === "social";
   const hideSidebar = isClassified || isArticle || task === "image" || isBookmark;
   const related = (await fetchTaskPosts(task, 6))
     .filter((item) => item.slug !== post.slug)
@@ -256,7 +257,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
           href={taskConfig?.route || "/"}
           className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          ← Back to {taskConfig?.label || "posts"}
+          {`<- Back to ${taskConfig?.label || "posts"}`}
         </Link>
 
         <div
@@ -329,8 +330,18 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                       </span>
                     )}
                   </div>
-                  <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
-                  <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                  {isSocial ? (
+                    <div className="mt-5 rounded-[1.8rem] border border-[#c4a484]/50 bg-[linear-gradient(180deg,#fffaf0_0%,#f8f2e4_100%)] p-6 shadow-[0_16px_42px_rgba(99,76,56,0.1)]">
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8a6548]">Community update</p>
+                      <h1 className="mt-3 text-3xl font-semibold text-[#2b221a]">{post.title}</h1>
+                      <RichContent html={descriptionHtml} className="mt-3 max-w-3xl text-[#5f4a3a]" />
+                    </div>
+                  ) : (
+                    <>
+                      <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
+                      <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                    </>
+                  )}
                 </div>
               </>
             ) : null}

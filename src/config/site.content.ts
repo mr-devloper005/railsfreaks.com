@@ -2,76 +2,76 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'Premium PDF and profile workspace',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'Documents, profiles, and trusted publishing',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
+    badge: 'Document command center',
+    title: ['Publish polished PDFs,', 'amplify them with social profiles.'],
     description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+      'Turn every PDF into a discoverable asset with profile-led distribution, clearer credibility cues, and faster sharing workflows.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
+      label: 'Open PDF library',
+      href: '/pdf',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'Explore profiles',
+      href: '/profile',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    searchPlaceholder: 'Search PDFs, creators, and updates',
     focusLabel: 'Focus',
-    featureCardBadge: 'latest cover rotation',
-    featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
+    featureCardBadge: 'featured release',
+    featureCardTitle: 'Lead documents and profile voices shape the homepage rhythm.',
     featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+      'Primary surfaces now prioritize PDF publishing and social profile distribution without touching platform logic.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
+      title: 'Premium PDF publishing with social profiles',
       description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+        'Publish and discover PDFs through a premium, profile-first experience designed for clarity and trust.',
+      openGraphTitle: 'Premium PDF publishing with social profiles',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'A premium PDF and social profile platform built for discoverability, credibility, and conversion.',
+      keywords: ['pdf platform', 'social profiles', 'document publishing', 'creator profiles'],
     },
     introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introTitle: 'Built to make PDFs discoverable through profile credibility.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'The platform combines a focused PDF library with social-profile storytelling so visitors can move from document to author context instantly.',
+      'Publishing teams can present downloadable assets and profile proof points inside one coherent product experience.',
+      'The result is a faster path from discovery to trust without fragmenting content across disconnected tools.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'PDF library promoted as the primary homepage action.',
+      'Social profile lane maintained as the secondary action surface.',
+      'Articles and other routes remain available with reduced prominence.',
+      'Lightweight motion and mobile-first utility for high performance.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'Browse PDFs',
+      href: '/pdf',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'See profiles',
+      href: '/profile',
     },
   },
   cta: {
-    badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
+    badge: 'Start publishing',
+    title: 'Ship premium PDFs and elevate reach through social profile distribution.',
     description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+      'From document hosting to profile-led trust signals, every core action is now tuned for PDF + social profile growth.',
     primaryCta: {
-      label: 'Get Started Free',
+      label: 'Create Account',
       href: '/register',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'Open PDF Library',
+      href: '/pdf',
     },
   },
   taskSectionHeading: 'Latest {label}',
@@ -81,7 +81,7 @@ export const siteContent = {
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
     title: 'Articles and stories',
-    description: 'Read articles, stories, guides, and long-form posts across topics and interests.',
+    description: 'Read editorial analysis, product notes, and long-form explainers connected to your documents.',
   },
   listing: {
     title: 'Listings and discoverable pages',
@@ -97,15 +97,15 @@ export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'soci
   },
   profile: {
     title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    description: 'Discover social profiles, creator identity pages, and distribution-ready author surfaces.',
   },
   sbm: {
     title: 'Curated links and saved resources',
     description: 'Browse useful links, saved references, and curated resources organized for discovery.',
   },
   pdf: {
-    title: 'PDFs and downloadable resources',
-    description: 'Open reports, documents, and downloadable resources shared across the platform.',
+    title: 'PDF Library and downloadable assets',
+    description: 'Open, preview, and download polished PDFs shared by teams and creators.',
   },
 }
 
@@ -129,14 +129,14 @@ export const taskIntroCopy: Record<
   article: {
     title: 'Articles, stories, and long-form reading',
     paragraphs: [
-      'This section is built for stories, explainers, guides, and long-form reading across topics and interests.',
-      'Articles connect with listings, images, resources, and other content types so deeper reading can lead naturally into related discovery.',
-      'Use this section to browse thoughtful posts, revisit useful writing, and move into supporting content when you want more context.',
+      'This section publishes editorial explainers, updates, and long-form commentary around documents and profile activity.',
+      'Articles complement PDFs by adding context, release narratives, and deeper product insight.',
+      'Use this lane when you need richer storytelling beyond the core document preview surfaces.',
     ],
     links: [
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open images', href: '/images' },
-      { label: 'Browse resources', href: '/pdf' },
+      { label: 'Open PDF library', href: '/pdf' },
+      { label: 'Explore profiles', href: '/profile' },
+      { label: 'Visit community', href: '/community' },
     ],
   },
   classified: {
@@ -166,16 +166,16 @@ export const taskIntroCopy: Record<
     ],
   },
   profile: {
-    title: 'Profiles, identities, and public pages',
+    title: 'Creator profiles and trusted public pages',
     paragraphs: [
-      'Profiles capture the identity behind a business, creator, brand, or project and help visitors understand who is behind the content they are exploring.',
-      'These pages work as trust anchors across the site and connect naturally with stories, listings, documents, and other post types.',
-      'Browse profiles to understand people and brands more clearly, then continue into related content from the same source.',
+      'Profiles show who is behind each PDF so visitors can evaluate expertise before opening downloads.',
+      'Each page highlights role clarity, publishing focus, and credibility cues that support faster trust decisions.',
+      'Use this section to scan creators, compare specialties, and jump into their best documents.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Browse images', href: '/images' },
+      { label: 'Open PDF library', href: '/pdf' },
+      { label: 'Create your profile', href: '/register' },
+      { label: 'Browse all profiles', href: '/profile' },
     ],
   },
   sbm: {
@@ -194,27 +194,27 @@ export const taskIntroCopy: Record<
   pdf: {
     title: 'PDFs, documents, and downloadable files',
     paragraphs: [
-      'The PDF library hosts reports, guides, downloadable files, and longer-form document resources that support reading and discovery.',
-      'These resources work alongside stories, listings, and profiles, helping document-style content stay connected to the rest of the platform.',
-      'Browse by category to find relevant files quickly, then continue into related sections when you want more context.',
+      'The PDF library is the primary product lane for reports, one-pagers, playbooks, and downloadable resources.',
+      'Each document is connected to social profile context so visitors can validate source credibility immediately.',
+      'Browse by category, open inline previews, and download what matters without friction.',
     ],
     links: [
       { label: 'Read articles', href: '/articles' },
-      { label: 'See listings', href: '/listings' },
       { label: 'Explore profiles', href: '/profile' },
+      { label: 'Open community', href: '/community' },
     ],
   },
   social: {
     title: 'Short updates and community signals',
     paragraphs: [
-      'Short updates add quick signals that keep activity flowing across the platform.',
-      'They work well with stories, listings, and resources by helping visitors move from brief updates into deeper content.',
-      'Use these posts as lightweight entry points into the broader site experience.',
+      'The social lane captures quick updates, launch moments, and distribution signals around new PDFs.',
+      'Use it to see what creators are sharing now before jumping into full documents or profile pages.',
+      'It is intentionally lightweight and activity-driven to complement the deeper PDF surfaces.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
+      { label: 'Open PDF library', href: '/pdf' },
       { label: 'Read articles', href: '/articles' },
-      { label: 'View PDFs', href: '/pdf' },
+      { label: 'Explore profiles', href: '/profile' },
     ],
   },
   comment: {
