@@ -34,7 +34,7 @@ const taskIcons: Record<TaskKey, any> = {
 const variantClasses = {
   'compact-bar': {
     shell: 'border-b border-slate-200/80 bg-white/88 text-slate-950 backdrop-blur-xl',
-    logo: 'rounded-2xl border border-slate-200 bg-white shadow-sm',
+    logo: 'rounded-xl bg-transparent shadow-none',
     active: 'bg-slate-950 text-white',
     idle: 'text-slate-600 hover:bg-slate-100 hover:text-slate-950',
     cta: 'rounded-full bg-slate-950 text-white hover:bg-slate-800',
@@ -42,7 +42,7 @@ const variantClasses = {
   },
   'editorial-bar': {
     shell: 'border-b border-[#d7c4b3] bg-[#fff7ee]/90 text-[#2f1d16] backdrop-blur-xl',
-    logo: 'rounded-full border border-[#dbc6b6] bg-white shadow-sm',
+    logo: 'rounded-xl bg-transparent shadow-none',
     active: 'bg-[#2f1d16] text-[#fff4e4]',
     idle: 'text-[#72594a] hover:bg-[#f2e5d4] hover:text-[#2f1d16]',
     cta: 'rounded-full bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
@@ -50,26 +50,26 @@ const variantClasses = {
   },
   'floating-bar': {
     shell: 'border-b border-transparent bg-transparent text-white',
-    logo: 'rounded-[1.35rem] border border-white/12 bg-white/8 shadow-[0_16px_48px_rgba(15,23,42,0.22)] backdrop-blur',
+    logo: 'rounded-xl bg-transparent shadow-none',
     active: 'bg-[#8df0c8] text-[#07111f]',
     idle: 'text-slate-200 hover:bg-white/10 hover:text-white',
     cta: 'rounded-full bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
     mobile: 'border-t border-white/10 bg-[#09101d]/96',
   },
   'utility-bar': {
-    shell: 'border-b border-[#d7deca] bg-[#f4f6ef]/94 text-[#1f2617] backdrop-blur-xl',
-    logo: 'rounded-xl border border-[#d7deca] bg-white shadow-sm',
-    active: 'bg-[#1f2617] text-[#edf5dc]',
-    idle: 'text-[#56604b] hover:bg-[#e7edd9] hover:text-[#1f2617]',
-    cta: 'rounded-lg bg-[#1f2617] text-[#edf5dc] hover:bg-[#2f3a24]',
-    mobile: 'border-t border-[#d7deca] bg-[#f4f6ef]',
+    shell: 'border-b border-[#c4a484]/55 bg-[#f7f1de]/94 text-[#2b221a] backdrop-blur-xl',
+    logo: 'rounded-xl bg-transparent shadow-none',
+    active: 'bg-[#b87c4c] text-[#fff7eb]',
+    idle: 'text-[#6e5847] hover:bg-[#f1e5cc] hover:text-[#2b221a]',
+    cta: 'rounded-lg bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
+    mobile: 'border-t border-[#c4a484]/55 bg-[#f7f1de]',
   },
 } as const
 
 const directoryPalette = {
   'directory-clean': {
     shell: 'border-b border-slate-200 bg-white/94 text-slate-950 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-xl',
-    logo: 'rounded-2xl border border-slate-200 bg-slate-50',
+    logo: 'rounded-xl bg-transparent shadow-none',
     nav: 'text-slate-600 hover:text-slate-950',
     search: 'border border-slate-200 bg-slate-50 text-slate-600',
     cta: 'bg-slate-950 text-white hover:bg-slate-800',
@@ -78,7 +78,7 @@ const directoryPalette = {
   },
   'market-utility': {
     shell: 'border-b border-[#d7deca] bg-[#f4f6ef]/96 text-[#1f2617] shadow-[0_1px_0_rgba(64,76,34,0.06)] backdrop-blur-xl',
-    logo: 'rounded-xl border border-[#d7deca] bg-white',
+    logo: 'rounded-xl bg-transparent shadow-none',
     nav: 'text-[#56604b] hover:text-[#1f2617]',
     search: 'border border-[#d7deca] bg-white text-[#56604b]',
     cta: 'bg-[#1f2617] text-[#edf5dc] hover:bg-[#2f3a24]',
@@ -97,14 +97,21 @@ export function Navbar() {
   const { isAuthenticated } = useAuth()
   const { recipe } = getFactoryState()
 
-  const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile'), [])
-  const primaryNavigation = navigation.slice(0, 5)
-  const mobileNavigation = navigation.map((task) => ({
+  const enabledTasks = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled), [])
+  const navEnabledTasks = useMemo(() => enabledTasks.filter((task) => task.key !== 'pdf' && task.key !== 'profile'), [enabledTasks])
+  const primaryTask =
+    navEnabledTasks.find((task) => task.key === recipe.primaryTask) ||
+    navEnabledTasks[0]
+  const secondaryTask =
+    navEnabledTasks.find((task) => task.key === 'profile' && task.key !== primaryTask?.key) ||
+    navEnabledTasks.find((task) => task.key !== primaryTask?.key)
+  const focusNavigation = [primaryTask, secondaryTask].filter((item): item is NonNullable<typeof item> => Boolean(item))
+  const secondaryNavigation = navEnabledTasks.filter((task) => !focusNavigation.some((focus) => focus.key === task.key))
+  const mobileNavigation = [...focusNavigation, ...secondaryNavigation].map((task) => ({
     name: task.label,
     href: task.route,
     icon: taskIcons[task.key] || LayoutGrid,
   }))
-  const primaryTask = SITE_CONFIG.tasks.find((task) => task.key === recipe.primaryTask && task.enabled) || primaryNavigation[0]
   const isDirectoryProduct = recipe.homeLayout === 'listing-home' || recipe.homeLayout === 'classified-home'
 
   if (isDirectoryProduct) {
@@ -115,8 +122,8 @@ export function Navbar() {
         <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-4">
             <Link href="/" className="flex shrink-0 items-center gap-3">
-              <div className={cn('flex h-12 w-12 items-center justify-center overflow-hidden p-1.5', palette.logo)}>
-                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+              <div className={cn('flex h-12 w-12 items-center justify-center overflow-hidden p-0', palette.logo)}>
+                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain contrast-110 saturate-125 drop-shadow-[0_3px_8px_rgba(0,0,0,0.18)]" />
               </div>
               <div className="min-w-0 hidden sm:block">
                 <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
@@ -125,7 +132,7 @@ export function Navbar() {
             </Link>
 
             <div className="hidden items-center gap-5 xl:flex">
-              {primaryNavigation.slice(0, 4).map((task) => {
+              {focusNavigation.map((task) => {
                 const isActive = pathname.startsWith(task.route)
                 return (
                   <Link key={task.key} href={task.route} className={cn('text-sm font-semibold transition-colors', isActive ? 'text-foreground' : palette.nav)}>
@@ -139,10 +146,10 @@ export function Navbar() {
           <div className="hidden min-w-0 flex-1 items-center justify-center lg:flex">
             <div className={cn('flex w-full max-w-xl items-center gap-3 rounded-full px-4 py-3', palette.search)}>
               <Search className="h-4 w-4" />
-              <span className="text-sm">Find businesses, spaces, and local services</span>
+              <span className="text-sm">Find PDFs, creators, and profile updates</span>
               <div className="ml-auto hidden items-center gap-1 text-xs opacity-75 md:flex">
                 <MapPin className="h-3.5 w-3.5" />
-                Local discovery
+                Library-wide search
               </div>
             </div>
           </div>
@@ -165,7 +172,7 @@ export function Navbar() {
                 <Button size="sm" asChild className={cn('rounded-full', palette.cta)}>
                   <Link href="/register">
                     <Plus className="mr-1 h-4 w-4" />
-                    Add Listing
+                    Upload PDF
                   </Link>
                 </Button>
               </div>
@@ -182,7 +189,7 @@ export function Navbar() {
             <div className="space-y-2 px-4 py-4">
               <div className={cn('mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium', palette.search)}>
                 <Search className="h-4 w-4" />
-                Find businesses, spaces, and services
+                Find PDFs, profiles, and updates
               </div>
               {mobileNavigation.map((item) => {
                 const isActive = pathname.startsWith(item.href)
@@ -210,8 +217,8 @@ export function Navbar() {
       <nav className={cn('mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8', isFloating ? 'h-24 pt-4' : 'h-20')}>
         <div className="flex min-w-0 flex-1 items-center gap-4 lg:gap-7">
           <Link href="/" className="flex shrink-0 items-center gap-3 whitespace-nowrap pr-2">
-            <div className={cn('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden p-1.5', style.logo)}>
-              <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+            <div className={cn('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden p-0', style.logo)}>
+              <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain contrast-110 saturate-125 drop-shadow-[0_3px_8px_rgba(0,0,0,0.18)]" />
             </div>
             <div className="min-w-0 hidden sm:block">
               <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
@@ -222,7 +229,7 @@ export function Navbar() {
           {isEditorial ? (
             <div className="hidden min-w-0 flex-1 items-center gap-4 xl:flex">
               <div className="h-px flex-1 bg-[#d8c8bb]" />
-              {primaryNavigation.map((task) => {
+              {focusNavigation.map((task) => {
                 const isActive = pathname.startsWith(task.route)
                 return (
                   <Link key={task.key} href={task.route} className={cn('text-sm font-semibold uppercase tracking-[0.18em] transition-colors', isActive ? 'text-[#2f1d16]' : 'text-[#7b6254] hover:text-[#2f1d16]')}>
@@ -234,7 +241,7 @@ export function Navbar() {
             </div>
           ) : isFloating ? (
             <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
-              {primaryNavigation.map((task) => {
+              {focusNavigation.map((task) => {
                 const Icon = taskIcons[task.key] || LayoutGrid
                 const isActive = pathname.startsWith(task.route)
                 return (
@@ -247,7 +254,7 @@ export function Navbar() {
             </div>
           ) : isUtility ? (
             <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
-              {primaryNavigation.map((task) => {
+              {focusNavigation.map((task) => {
                 const isActive = pathname.startsWith(task.route)
                 return (
                   <Link key={task.key} href={task.route} className={cn('rounded-lg px-3 py-2 text-sm font-semibold transition-colors', isActive ? style.active : style.idle)}>
@@ -258,7 +265,7 @@ export function Navbar() {
             </div>
           ) : (
             <div className="hidden min-w-0 flex-1 items-center gap-1 overflow-hidden xl:flex">
-              {primaryNavigation.map((task) => {
+              {focusNavigation.map((task) => {
                 const Icon = taskIcons[task.key] || LayoutGrid
                 const isActive = pathname.startsWith(task.route)
                 return (
@@ -295,10 +302,10 @@ export function Navbar() {
                 <Link href="/login">Sign In</Link>
               </Button>
               <Button size="sm" asChild className={style.cta}>
-                <Link href="/register">{isEditorial ? 'Subscribe' : isUtility ? 'Post Now' : 'Get Started'}</Link>
-              </Button>
-            </div>
-          )}
+                  <Link href="/register">{isEditorial ? 'Join Now' : isUtility ? 'Upload Now' : 'Get Started'}</Link>
+                </Button>
+              </div>
+            )}
 
           <Button variant="ghost" size="icon" className="rounded-full lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

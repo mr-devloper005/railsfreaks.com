@@ -1,10 +1,15 @@
+ 'use client'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState, type FormEvent } from 'react'
 import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { REGISTER_PAGE_OVERRIDE_ENABLED, RegisterPageOverride } from '@/overrides/register-page'
+import { useAuth } from '@/lib/auth-context'
 
 function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
   if (kind === 'directory') {
@@ -15,8 +20,8 @@ function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
       muted: 'text-slate-600',
       action: 'bg-slate-950 text-white hover:bg-slate-800',
       icon: Building2,
-      title: 'Create a business-ready account',
-      body: 'List services, manage locations, and activate trust signals with a proper directory workflow.',
+      title: 'Create your PDF publisher account',
+      body: 'Start publishing professional PDFs with profile-backed credibility from day one.',
     }
   }
   if (kind === 'editorial') {
@@ -27,8 +32,8 @@ function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
       muted: 'text-[#6e5547]',
       action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
       icon: FileText,
-      title: 'Start your contributor workspace',
-      body: 'Create a profile for essays, issue drafts, editorial review, and publication scheduling.',
+      title: 'Start your profile-led publishing space',
+      body: 'Create an account to host PDFs, build trust with profile context, and grow document reach.',
     }
   }
   if (kind === 'visual') {
@@ -39,8 +44,8 @@ function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
       muted: 'text-slate-300',
       action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
       icon: ImageIcon,
-      title: 'Set up your creator profile',
-      body: 'Launch a visual-first account with gallery publishing, identity surfaces, and profile-led discovery.',
+      title: 'Set up your creator PDF profile',
+      body: 'Launch a profile that connects your documents, expertise, and public credibility in one page.',
     }
   }
   return {
@@ -50,8 +55,8 @@ function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
     muted: 'text-[#71574a]',
     action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
     icon: Bookmark,
-    title: 'Create a curator account',
-    body: 'Build shelves, save references, and connect collections to your profile without a generic feed setup.',
+    title: 'Join Railsfreaks',
+    body: 'Create your account to publish PDFs, highlight your profile, and share trusted resources.',
   }
 }
 
@@ -60,10 +65,23 @@ export default function RegisterPage() {
     return <RegisterPageOverride />
   }
 
+  const router = useRouter()
+  const { signup, isLoading } = useAuth()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [creatorPlan, setCreatorPlan] = useState('')
+
   const { recipe } = getFactoryState()
   const productKind = getProductKind(recipe)
   const config = getRegisterConfig(productKind)
   const Icon = config.icon
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    await signup(name, email, password)
+    router.push('/')
+  }
 
   return (
     <div className={`min-h-screen ${config.shell}`}>
@@ -75,7 +93,7 @@ export default function RegisterPage() {
             <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em]">{config.title}</h1>
             <p className={`mt-5 text-sm leading-8 ${config.muted}`}>{config.body}</p>
             <div className="mt-8 grid gap-4">
-              {['Different onboarding per product family', 'No repeated one-size-fits-all shell', 'Profile, publishing, and discovery aligned'].map((item) => (
+              {['Create a verified profile presence', 'Upload PDFs with cleaner discovery', 'Build trust through consistent author identity'].map((item) => (
                 <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">{item}</div>
               ))}
             </div>
@@ -83,12 +101,39 @@ export default function RegisterPage() {
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Create account</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Full name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What are you creating or publishing?" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Create account</button>
+            <form className="mt-6 grid gap-4" onSubmit={handleSubmit}>
+              <input
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm"
+                placeholder="Full name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                required
+              />
+              <input
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm"
+                placeholder="Email address"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+              <input
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+              <input
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm"
+                placeholder="What type of PDFs will you publish?"
+                value={creatorPlan}
+                onChange={(event) => setCreatorPlan(event.target.value)}
+              />
+              <button type="submit" disabled={isLoading} className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action} disabled:cursor-not-allowed disabled:opacity-70`}>
+                {isLoading ? 'Creating account...' : 'Create account'}
+              </button>
             </form>
             <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
               <span>Already have an account?</span>
