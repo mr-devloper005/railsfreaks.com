@@ -80,10 +80,10 @@ const cardStyles = {
     badge: 'bg-[#1f2617] text-[#edf5dc]',
   },
   'pdf-sheet': {
-    frame: 'rounded-[1.8rem] border border-[rgba(196,164,132,0.5)] bg-[#fffaf0] shadow-[0_18px_58px_rgba(99,76,56,0.12)] hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(99,76,56,0.18)]',
-    muted: 'text-[#6e5847]',
-    title: 'text-[#2b221a]',
-    badge: 'bg-[#b87c4c] text-[#fff7eb]',
+    frame: 'rounded-[1.8rem] border border-[#d4d0c5] bg-white shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)]',
+    muted: 'text-[#666]',
+    title: 'text-[#333]',
+    badge: 'bg-[#667eea] text-white',
   },
   'social-note': {
     frame: 'rounded-[1.8rem] border border-[rgba(168,187,163,0.42)] bg-[#f9f5e8] shadow-[0_16px_45px_rgba(87,112,83,0.12)] hover:-translate-y-1 hover:shadow-[0_24px_62px_rgba(87,112,83,0.18)]',
