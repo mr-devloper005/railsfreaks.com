@@ -53,7 +53,7 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
     notFound();
   }
 
-  const viewerUrl = `${fileUrl}#toolbar=0&navpanes=0&scrollbar=0`;
+  const viewerUrl = `${fileUrl}#toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit`;
   const baseUrl = SITE_CONFIG.baseUrl.replace(/\/$/, "");
   const category =
     typeof contentAny.category === "string" ? contentAny.category : "";
@@ -96,71 +96,56 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
   };
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#f7f1de_0%,#fcf8ee_45%,#f7f1de_100%)]">
+    <div className="min-h-screen bg-[#eeeadf]">
       <NavbarShell />
-      <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+      <main className="px-4 py-8 sm:px-6 lg:px-8">
         <SchemaJsonLd data={breadcrumbData} />
         <Link
           href="/pdf"
-          className="text-sm text-[#6e5847] hover:text-[#2b221a]"
+          className="text-sm text-[#666] hover:text-[#333] transition-colors duration-200"
         >
           {'<- Back to PDF Library'}
         </Link>
 
-        <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-          <div className="rounded-[1.8rem] border border-[#c4a484]/60 bg-white/82 p-6 shadow-[0_18px_48px_rgba(99,76,56,0.1)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8a6548]">Document Asset</p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#2b221a]">{post.title}</h1>
-            <p className="mt-3 text-sm leading-7 text-[#6e5847]">
-              Preview the document inline, then download the original file with one click.
+        <section className="mb-8">
+          <div className="rounded-[2rem] border border-[#d4d0c5] bg-white p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+            <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-[#666]">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#667eea]"></span>
+              Document Asset
+            </div>
+            <h1 className="mt-4 text-4xl font-bold tracking-[-0.05em] text-[#333]">{post.title}</h1>
+            <p className="mt-4 text-lg leading-8 text-[#666]">
+              Experience this document in our clean viewer. Download available for offline access.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-6">
               <a
                 href={fileUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-lg bg-[#b87c4c] px-4 py-2 text-sm font-semibold text-[#fff7eb] hover:bg-[#9f673b]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#667eea] px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#5568d3] transition-all duration-300 hover:scale-105"
               >
                 Download PDF
               </a>
-              <Link
-                href="/profile"
-                className="rounded-lg border border-[#c4a484] bg-[#fdf6e7] px-4 py-2 text-sm font-semibold text-[#4a3527] hover:bg-[#f4e9d1]"
-              >
-                View author profiles
-              </Link>
             </div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {[
-              ["Preview-first flow", "Open and assess before downloading."],
-              ["Profile context", "Cross-check source through profile pages."],
-              ["Fast sharing", "Document links stay stable and easy to distribute."],
-              ["Mobile optimized", "Reader works smoothly on smaller screens."],
-            ].map(([title, body]) => (
-              <div key={title} className="rounded-[1.4rem] border border-[#c4a484]/45 bg-[#fffaf1] p-4">
-                <p className="text-sm font-semibold text-[#2b221a]">{title}</p>
-                <p className="mt-2 text-xs leading-6 text-[#6e5847]">{body}</p>
-              </div>
-            ))}
           </div>
         </section>
 
-        <div className="overflow-hidden rounded-2xl border border-[#c4a484]/55 bg-white shadow-[0_18px_48px_rgba(99,76,56,0.1)]">
+        <div className="mx-auto overflow-hidden bg-white max-w-4xl" style={{ margin: '0 auto' }}>
           <iframe
             src={viewerUrl}
             title={post.title}
-            className="h-[85vh] w-full"
+            className="h-screen w-full"
+            style={{ width: '100%', height: '100vh', border: 'none', display: 'block' }}
           />
         </div>
 
         {related.length ? (
-          <section className="pt-4">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-[#2b221a]">More like this</h2>
+          <section className="pt-8">
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-[#333]">More like this</h2>
               <Link
                 href="/pdf"
-                className="text-sm text-[#6e5847] hover:text-[#2b221a]"
+                className="text-sm text-[#666] hover:text-[#333] transition-colors duration-200"
               >
                 View all
               </Link>
@@ -175,21 +160,21 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
                 />
               ))}
             </div>
-            <nav className="mt-6 rounded-2xl border border-[#c4a484]/50 bg-white/75 p-4">
-              <p className="text-sm font-semibold text-[#2b221a]">Related links</p>
-              <ul className="mt-2 space-y-2 text-sm">
+            <nav className="mt-8 rounded-[2rem] border border-[#d4d0c5] bg-white p-6">
+              <p className="text-lg font-semibold text-[#333]">Related links</p>
+              <ul className="mt-4 space-y-3 text-sm">
                 {related.map((item) => (
                   <li key={`related-${item.id}`}>
                     <Link
                       href={buildPostUrl("pdf", item.slug)}
-                      className="text-[#7d5538] underline-offset-4 hover:underline"
+                      className="text-[#667eea] underline-offset-4 hover:underline hover:text-[#5568d3] transition-colors duration-200"
                     >
                       {item.title}
                     </Link>
                   </li>
                 ))}
                 <li>
-                  <Link href="/pdf" className="text-[#7d5538] underline-offset-4 hover:underline">
+                  <Link href="/pdf" className="text-[#667eea] underline-offset-4 hover:underline hover:text-[#5568d3] transition-colors duration-200">
                     Browse all PDFs
                   </Link>
                 </li>
