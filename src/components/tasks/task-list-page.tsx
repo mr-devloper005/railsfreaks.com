@@ -37,7 +37,7 @@ const variantShells = {
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
   'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
-  'pdf-library': 'bg-[radial-gradient(circle_at_top_left,rgba(168,187,163,0.16),transparent_26%),linear-gradient(180deg,#f7f1de_0%,#fdf9f0_100%)]',
+  'pdf-library': 'bg-[#eeeadf]',
   'social-stream': 'bg-[radial-gradient(circle_at_top_left,rgba(184,124,76,0.14),transparent_24%),linear-gradient(180deg,#fff9ef_0%,#ffffff_100%)]',
 } as const
 
@@ -96,11 +96,11 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         }
 
   const pdfUi = {
-    muted: 'text-[#6e5847]',
-    panel: 'border border-[#c4a484]/55 bg-white/85 shadow-[0_18px_48px_rgba(101,78,57,0.1)]',
-    soft: 'border border-[#c4a484]/45 bg-[#fdf7e8]',
-    input: 'border border-[#c4a484]/50 bg-white text-[#2b221a]',
-    button: 'bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
+    muted: 'text-[#666]',
+    panel: 'border border-[#d4d0c5] bg-white shadow-[0_8px_32px_rgba(0,0,0,0.08)]',
+    soft: 'border border-[#d4d0c5] bg-white',
+    input: 'border border-[#d4d0c5] bg-white text-[#333]',
+    button: 'bg-[#667eea] text-white hover:bg-[#5568d3]',
   }
 
   const socialUi = {
@@ -286,8 +286,8 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           <section className="mb-12">
             <div className={`rounded-[2rem] p-7 ${pdfUi.panel}`}>
               <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${pdfUi.muted}`}>Primary Surface</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[#2b221a]">PDF Library with fast preview, cleaner download flow, and trust-first metadata.</h1>
-              <p className={`mt-4 max-w-2xl text-sm leading-8 ${pdfUi.muted}`}>This lane is utility-first by design so users can scan document assets quickly without the visual rhythm of a standard feed.</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[#333]">PDF Library with clean design and fast access.</h1>
+              <p className={`mt-4 max-w-2xl text-sm leading-8 ${pdfUi.muted}`}>This surface is designed for quick document scanning and downloads.</p>
             </div>
           </section>
         ) : null}
