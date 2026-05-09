@@ -90,6 +90,9 @@ export function Footer() {
             <Link href="/contact" className="hover:text-[#2b221a] hover:underline">
               Contact Us
             </Link>
+            <Link href="/help" className="hover:text-[#2b221a] hover:underline">
+              Help Center
+            </Link>
           </div>
         </div>
       </footer>

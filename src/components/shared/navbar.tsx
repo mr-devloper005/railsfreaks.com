@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/auth-context'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { cn } from '@/lib/utils'
-import { siteContent } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { NAVBAR_OVERRIDE_ENABLED, NavbarOverride } from '@/overrides/navbar'
 
@@ -34,7 +33,7 @@ const taskIcons: Record<TaskKey, any> = {
 const variantClasses = {
   'compact-bar': {
     shell: 'border-b border-slate-200/80 bg-white/88 text-slate-950 backdrop-blur-xl',
-    logo: 'rounded-xl bg-transparent shadow-none',
+    logo: 'bg-transparent shadow-none',
     active: 'bg-slate-950 text-white',
     idle: 'text-slate-600 hover:bg-slate-100 hover:text-slate-950',
     cta: 'rounded-full bg-slate-950 text-white hover:bg-slate-800',
@@ -42,7 +41,7 @@ const variantClasses = {
   },
   'editorial-bar': {
     shell: 'border-b border-[#d7c4b3] bg-[#fff7ee]/90 text-[#2f1d16] backdrop-blur-xl',
-    logo: 'rounded-xl bg-transparent shadow-none',
+    logo: 'bg-transparent shadow-none',
     active: 'bg-[#2f1d16] text-[#fff4e4]',
     idle: 'text-[#72594a] hover:bg-[#f2e5d4] hover:text-[#2f1d16]',
     cta: 'rounded-full bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
@@ -50,7 +49,7 @@ const variantClasses = {
   },
   'floating-bar': {
     shell: 'border-b border-transparent bg-transparent text-white',
-    logo: 'rounded-xl bg-transparent shadow-none',
+    logo: 'bg-transparent shadow-none',
     active: 'bg-[#8df0c8] text-[#07111f]',
     idle: 'text-slate-200 hover:bg-white/10 hover:text-white',
     cta: 'rounded-full bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
@@ -58,7 +57,7 @@ const variantClasses = {
   },
   'utility-bar': {
     shell: 'border-b border-[#c4a484]/55 bg-[#f7f1de]/94 text-[#2b221a] backdrop-blur-xl',
-    logo: 'rounded-xl bg-transparent shadow-none',
+    logo: 'bg-transparent shadow-none',
     active: 'bg-[#b87c4c] text-[#fff7eb]',
     idle: 'text-[#6e5847] hover:bg-[#f1e5cc] hover:text-[#2b221a]',
     cta: 'rounded-lg bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
@@ -69,7 +68,7 @@ const variantClasses = {
 const directoryPalette = {
   'directory-clean': {
     shell: 'border-b border-slate-200 bg-white/94 text-slate-950 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-xl',
-    logo: 'rounded-xl bg-transparent shadow-none',
+    logo: 'bg-transparent shadow-none',
     nav: 'text-slate-600 hover:text-slate-950',
     search: 'border border-slate-200 bg-slate-50 text-slate-600',
     cta: 'bg-slate-950 text-white hover:bg-slate-800',
@@ -78,7 +77,7 @@ const directoryPalette = {
   },
   'market-utility': {
     shell: 'border-b border-[#d7deca] bg-[#f4f6ef]/96 text-[#1f2617] shadow-[0_1px_0_rgba(64,76,34,0.06)] backdrop-blur-xl',
-    logo: 'rounded-xl bg-transparent shadow-none',
+    logo: 'bg-transparent shadow-none',
     nav: 'text-[#56604b] hover:text-[#1f2617]',
     search: 'border border-[#d7deca] bg-white text-[#56604b]',
     cta: 'bg-[#1f2617] text-[#edf5dc] hover:bg-[#2f3a24]',
@@ -127,7 +126,6 @@ export function Navbar() {
               </div>
               <div className="min-w-0 hidden sm:block">
                 <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
-                <span className="block text-[10px] uppercase tracking-[0.24em] opacity-60">{siteContent.navbar.tagline}</span>
               </div>
             </Link>
 
@@ -140,6 +138,10 @@ export function Navbar() {
                   </Link>
                 )
               })}
+              <Link href="/pdf" className={cn('text-sm font-semibold transition-colors', pathname.startsWith('/pdf') ? 'text-foreground' : palette.nav)}>PDF Library</Link>
+              <Link href="/about" className={cn('text-sm font-semibold transition-colors', pathname === '/about' ? 'text-foreground' : palette.nav)}>About</Link>
+              <Link href="/contact" className={cn('text-sm font-semibold transition-colors', pathname === '/contact' ? 'text-foreground' : palette.nav)}>Contact</Link>
+              <Link href="/help" className={cn('text-sm font-semibold transition-colors', pathname === '/help' ? 'text-foreground' : palette.nav)}>Help</Link>
             </div>
           </div>
 
@@ -222,7 +224,6 @@ export function Navbar() {
             </div>
             <div className="min-w-0 hidden sm:block">
               <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
-              <span className="hidden text-[10px] uppercase tracking-[0.28em] opacity-70 sm:block">{siteContent.navbar.tagline}</span>
             </div>
           </Link>
 
@@ -237,6 +238,10 @@ export function Navbar() {
                   </Link>
                 )
               })}
+              <Link href="/pdf" className={cn('text-sm font-semibold uppercase tracking-[0.18em] transition-colors', pathname.startsWith('/pdf') ? 'text-[#2f1d16]' : 'text-[#7b6254] hover:text-[#2f1d16]')}>PDF Library</Link>
+              <Link href="/about" className={cn('text-sm font-semibold uppercase tracking-[0.18em] transition-colors', pathname === '/about' ? 'text-[#2f1d16]' : 'text-[#7b6254] hover:text-[#2f1d16]')}>About</Link>
+              <Link href="/contact" className={cn('text-sm font-semibold uppercase tracking-[0.18em] transition-colors', pathname === '/contact' ? 'text-[#2f1d16]' : 'text-[#7b6254] hover:text-[#2f1d16]')}>Contact</Link>
+              <Link href="/help" className={cn('text-sm font-semibold uppercase tracking-[0.18em] transition-colors', pathname === '/help' ? 'text-[#2f1d16]' : 'text-[#7b6254] hover:text-[#2f1d16]')}>Help</Link>
               <div className="h-px flex-1 bg-[#d8c8bb]" />
             </div>
           ) : isFloating ? (
@@ -251,6 +256,10 @@ export function Navbar() {
                   </Link>
                 )
               })}
+              <Link href="/pdf" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname.startsWith('/pdf') ? style.active : style.idle)}>PDF Library</Link>
+              <Link href="/about" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname === '/about' ? style.active : style.idle)}>About</Link>
+              <Link href="/contact" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname === '/contact' ? style.active : style.idle)}>Contact</Link>
+              <Link href="/help" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname === '/help' ? style.active : style.idle)}>Help</Link>
             </div>
           ) : isUtility ? (
             <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
@@ -262,6 +271,10 @@ export function Navbar() {
                   </Link>
                 )
               })}
+              <Link href="/pdf" className={cn('rounded-lg px-3 py-2 text-sm font-semibold transition-colors', pathname.startsWith('/pdf') ? style.active : style.idle)}>PDF Library</Link>
+              <Link href="/about" className={cn('rounded-lg px-3 py-2 text-sm font-semibold transition-colors', pathname === '/about' ? style.active : style.idle)}>About</Link>
+              <Link href="/contact" className={cn('rounded-lg px-3 py-2 text-sm font-semibold transition-colors', pathname === '/contact' ? style.active : style.idle)}>Contact</Link>
+              <Link href="/help" className={cn('rounded-lg px-3 py-2 text-sm font-semibold transition-colors', pathname === '/help' ? style.active : style.idle)}>Help</Link>
             </div>
           ) : (
             <div className="hidden min-w-0 flex-1 items-center gap-1 overflow-hidden xl:flex">
@@ -275,6 +288,10 @@ export function Navbar() {
                   </Link>
                 )
               })}
+              <Link href="/pdf" className={cn('rounded-full px-3 py-2 text-sm font-semibold transition-colors whitespace-nowrap', pathname.startsWith('/pdf') ? style.active : style.idle)}>PDF Library</Link>
+              <Link href="/about" className={cn('rounded-full px-3 py-2 text-sm font-semibold transition-colors whitespace-nowrap', pathname === '/about' ? style.active : style.idle)}>About</Link>
+              <Link href="/contact" className={cn('rounded-full px-3 py-2 text-sm font-semibold transition-colors whitespace-nowrap', pathname === '/contact' ? style.active : style.idle)}>Contact</Link>
+              <Link href="/help" className={cn('rounded-full px-3 py-2 text-sm font-semibold transition-colors whitespace-nowrap', pathname === '/help' ? style.active : style.idle)}>Help</Link>
             </div>
           )}
         </div>
