@@ -144,120 +144,62 @@ function getCurationTone() {
 
 function PdfProfileHome({
   primaryTask,
-  secondaryTask,
   pdfPosts,
-  profilePosts,
   articlePosts,
 }: {
   primaryTask?: EnabledTask
-  secondaryTask?: EnabledTask
   pdfPosts: SitePost[]
-  profilePosts: SitePost[]
   articlePosts: SitePost[]
 }) {
-  const featuredPdf = pdfPosts[0]
-  const standoutProfiles = profilePosts.slice(0, 3)
+  const featuredPdfs = pdfPosts.slice(0, 6)
   const insightPosts = articlePosts.slice(0, 3)
-  const fallbackProfiles = [
-    {
-      id: 'fallback-profile-1',
-      name: 'Ananya Iyer',
-      role: 'Compliance Lead',
-      summary: 'Publishes audit-ready policy packs and quarterly risk summaries for fintech operations teams.',
-      image: '/placeholder-user.jpg',
-    },
-    {
-      id: 'fallback-profile-2',
-      name: 'Marcus D\'Souza',
-      role: 'Revenue Ops Strategist',
-      summary: 'Shares pricing playbooks, onboarding SOPs, and partner enablement decks used in B2B launches.',
-      image: '/placeholder-user.jpg',
-    },
-    {
-      id: 'fallback-profile-3',
-      name: 'Neha Kulkarni',
-      role: 'Research Program Manager',
-      summary: 'Curates evidence-backed PDF briefings and stakeholder-ready executive summaries for product teams.',
-      image: '/placeholder-user.jpg',
-    },
-  ] as const
 
   return (
     <main className="bg-[linear-gradient(180deg,#f7f1de_0%,#fbf8ef_44%,#f7f1de_100%)] text-[#2b221a]">
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.06fr_0.94fr] lg:items-start">
-          <div>
-            <h1 className="max-w-4xl text-5xl font-semibold tracking-[-0.06em] text-[#2b221a] sm:text-6xl">
-              Premium document publishing built around profile credibility.
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#6e5847]">
-              Publish polished PDFs, showcase the people behind them, and make discovery feel intentional instead of template-driven.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={primaryTask?.route || '/pdf'} className="inline-flex items-center gap-2 rounded-full bg-[#b87c4c] px-5 py-3 text-sm font-semibold text-[#fff7eb] hover:bg-[#9f673b]">
-                Open PDF Library
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href={secondaryTask?.route || '/profile'} className="inline-flex items-center gap-2 rounded-full border border-[#c4a484] bg-[#f7f1de] px-5 py-3 text-sm font-semibold text-[#4a3527] hover:bg-[#efe3c9]">
-                Explore Profiles
-              </Link>
-            </div>
-          </div>
-          <div className="grid gap-4">
-            {featuredPdf ? (
-              <Link href={getTaskHref('pdf', featuredPdf.slug)} className="overflow-hidden rounded-[2rem] border border-[#c4a484]/55 bg-white/88 shadow-[0_24px_60px_rgba(101,78,57,0.12)]">
-                <div className="relative h-[280px] overflow-hidden bg-[#ece3cd]">
-                  <ContentImage src={getPostImage(featuredPdf)} alt={featuredPdf.title} fill className="object-cover" />
-                </div>
-                <div className="p-6">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8a6548]">Featured PDF</p>
-                  <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-[#2b221a]">{featuredPdf.title}</h2>
-                  <p className="mt-3 text-sm leading-7 text-[#6e5847]">{featuredPdf.summary || 'Open document preview, review key takeaways, and download in one step.'}</p>
-                </div>
-              </Link>
-            ) : null}
+        <div className="max-w-4xl">
+          <h1 className="text-5xl font-semibold tracking-[-0.06em] text-[#2b221a] sm:text-6xl">
+            Premium document publishing built around profile credibility.
+          </h1>
+          <p className="mt-6 max-w-2xl text-base leading-8 text-[#6e5847]">
+            Publish polished PDFs, showcase the people behind them, and make discovery feel intentional instead of template-driven.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={primaryTask?.route || '/pdf'} className="inline-flex items-center gap-2 rounded-full bg-[#b87c4c] px-5 py-3 text-sm font-semibold text-[#fff7eb] hover:bg-[#9f673b]">
+              Open PDF Library
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] border border-[#c4a484]/55 bg-white/85 p-6 shadow-[0_20px_55px_rgba(101,78,57,0.1)]">
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[#2b221a]">People behind the PDFs</h2>
+      {featuredPdfs.length ? (
+        <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+          <div className="rounded-[2rem] border border-[#c4a484]/55 bg-white/85 p-6 shadow-[0_20px_55px_rgba(101,78,57,0.1)]">
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8a6548]">Featured Documents</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#2b221a]">PDF Library</h2>
+              </div>
+              <Link href="/pdf" className="text-sm font-semibold text-[#7d5538] hover:opacity-75">View all PDFs</Link>
             </div>
-            <Link href="/profile" className="text-sm font-semibold text-[#7d5538] hover:opacity-75">View all profiles</Link>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {[0, 1, 2].map((index) => {
-              const post = standoutProfiles[index]
-              if (post) {
-                return (
-                  <Link key={post.id} href={getTaskHref('profile', post.slug)} className="rounded-[1.4rem] border border-[#c4a484]/45 bg-[#fdfaf1] p-4">
-                    <div className="relative h-28 overflow-hidden rounded-xl bg-[#e8dcc1]">
-                      <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                    </div>
-                    <h3 className="mt-3 text-lg font-semibold text-[#2b221a]">{post.title}</h3>
-                    <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#6e5847]">{post.summary || 'Profile highlights and document trail.'}</p>
-                  </Link>
-                )
-              }
-
-              const fallback = fallbackProfiles[index]
-              return (
-                <Link key={fallback.id} href="/profile" className="rounded-[1.4rem] border border-[#c4a484]/45 bg-[#fdfaf1] p-4">
-                  <div className="relative h-28 overflow-hidden rounded-xl bg-[#e8dcc1]">
-                    <ContentImage src={fallback.image} alt={fallback.name} fill className="object-cover" />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredPdfs.map((post) => (
+                <Link key={post.id} href={getTaskHref('pdf', post.slug)} className="overflow-hidden rounded-[1.4rem] border border-[#c4a484]/45 bg-[#fdfaf1] transition-all hover:shadow-lg">
+                  <div className="relative h-44 overflow-hidden bg-[#e8dcc1]">
+                    <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
                   </div>
-                  <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8a6548]">{fallback.role}</p>
-                  <h3 className="mt-1 text-lg font-semibold text-[#2b221a]">{fallback.name}</h3>
-                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#6e5847]">{fallback.summary}</p>
+                  <div className="p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8a6548]">PDF Document</p>
+                    <h3 className="mt-1 text-lg font-semibold text-[#2b221a]">{post.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#6e5847]">{post.summary || 'Open document preview and download.'}</p>
+                  </div>
                 </Link>
-              )
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {insightPosts.length ? (
         <section className="border-y border-[#c4a484]/35 bg-white/75">
@@ -670,12 +612,10 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <NavbarShell />
       <SchemaJsonLd data={schemaData} />
-      {enabledTasks.some((task) => task.key === 'pdf') && enabledTasks.some((task) => task.key === 'profile') ? (
+      {enabledTasks.some((task) => task.key === 'pdf') ? (
         <PdfProfileHome
           primaryTask={preferredPrimaryTask}
-          secondaryTask={secondaryTask}
           pdfPosts={pdfPosts}
-          profilePosts={profilePosts}
           articlePosts={articlePosts}
         />
       ) : null}

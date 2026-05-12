@@ -9,37 +9,37 @@ import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/
 function getTone(kind: ReturnType<typeof getProductKind>) {
   if (kind === 'directory') {
     return {
-      shell: 'bg-[#f8fbff] text-slate-950',
-      panel: 'border border-slate-200 bg-white',
-      soft: 'border border-slate-200 bg-slate-50',
-      muted: 'text-slate-600',
-      action: 'bg-slate-950 text-white hover:bg-slate-800',
+      shell: 'bg-[#faf7ec] text-[#2b221a]',
+      panel: 'border border-[#c4a484]/55 bg-white/85 shadow-[0_20px_55px_rgba(101,78,57,0.1)]',
+      soft: 'border border-[#c4a484]/45 bg-[#fdfaf1]',
+      muted: 'text-[#6e5847]',
+      action: 'bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
     }
   }
   if (kind === 'editorial') {
     return {
-      shell: 'bg-[#fbf6ee] text-[#241711]',
-      panel: 'border border-[#dcc8b7] bg-[#fffdfa]',
-      soft: 'border border-[#e6d6c8] bg-[#fff4e8]',
-      muted: 'text-[#6e5547]',
-      action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
+      shell: 'bg-[#faf7ec] text-[#2b221a]',
+      panel: 'border border-[#c4a484]/55 bg-white/85 shadow-[0_20px_55px_rgba(101,78,57,0.1)]',
+      soft: 'border border-[#c4a484]/45 bg-[#fdfaf1]',
+      muted: 'text-[#6e5847]',
+      action: 'bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
     }
   }
   if (kind === 'visual') {
     return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      soft: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
+      shell: 'bg-[#faf7ec] text-[#2b221a]',
+      panel: 'border border-[#c4a484]/55 bg-white/85 shadow-[0_20px_55px_rgba(101,78,57,0.1)]',
+      soft: 'border border-[#c4a484]/45 bg-[#fdfaf1]',
+      muted: 'text-[#6e5847]',
+      action: 'bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
     }
   }
   return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4]',
-    soft: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
+    shell: 'bg-[#faf7ec] text-[#2b221a]',
+    panel: 'border border-[#c4a484]/55 bg-white/85 shadow-[0_20px_55px_rgba(101,78,57,0.1)]',
+    soft: 'border border-[#c4a484]/45 bg-[#fdfaf1]',
+    muted: 'text-[#6e5847]',
+    action: 'bg-[#b87c4c] text-[#fff7eb] hover:bg-[#9f673b]',
   }
 }
 
